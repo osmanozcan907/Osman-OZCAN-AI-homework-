@@ -1,0 +1,48 @@
+import csv
+
+def main():
+    # Dosya yolunu belirle
+    file_path = "favorites.csv"
+    
+    try:
+        # Kullanıcıdan minimum oy sınırını al
+        min_votes = int(input("Minimum vote count: "))
+        
+        # Filtrelenmiş sonuçları saklamak için bir sözlük (ya da liste)
+        counts = {}
+
+        # CSV dosyasını oku
+        with open(file_path, "r") as file:
+            reader = csv.DictReader(file)
+            
+            # Her satırı oku ve frekansları say
+            for row in reader:
+                # 'title' veya 'language' gibi sütun adını CSV'ye göre uyarla
+                # Burada genel bir 'title' sütunu olduğunu varsayıyoruz
+                item = row["title"]
+                
+                if item in counts:
+                    counts[item] += 1
+                else:
+                    counts[item] = 1
+
+        # Filtreleme ve Sonuçları Yazdırma
+        print(f"\nResults with at least {min_votes} votes:")
+        print("-" * 30)
+        
+        found = False
+        for item in counts:
+            if counts[item] >= min_votes:
+                print(f"{item}: {counts[item]}")
+                found = True
+        
+        if not found:
+            print("No items met the criteria.")
+
+    except FileNotFoundError:
+        print(f"Error: {file_path} not found.")
+    except ValueError:
+        print("Error: Please enter a valid integer for the vote count.")
+
+if __name__ == "__main__":
+    main()

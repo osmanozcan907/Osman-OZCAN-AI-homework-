@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Design Exercise - Master File</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- CSS Variables & Reset --- */
+    :root {
+      --primary: #1a3a5c;
+      --accent: #e8a838;
+      --bg-light: #f4f7f6;
+      --text-dark: #2c3e50;
+      --white: #ffffff;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: var(--text-dark);
+      background-color: var(--bg-light);
+    }
+
+    /* --- Header & Navigation --- */
+    header {
+      background: var(--primary);
+      color: var(--white);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap; /* Mobile compatibility */
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    nav a {
+      color: var(--white);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    /* --- Hero Section --- */
+    #hero {
+      background: linear-gradient(rgba(26, 58, 92, 0.8), rgba(26, 58, 92, 0.8)), 
+                  url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80');
+      background-size: cover;
+      background-position: center;
+      color: var(--white);
+      text-align: center;
+      padding: 6rem 2rem;
+    }
+
+    #hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    /* --- Main Layout --- */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    section {
+      margin-bottom: 5rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+    }
+
+    /* --- Task: Flexbox Cards --- */
+    .flex-container {
+      display: flex;
+      flex-wrap: wrap; /* This makes it responsive! */
+      gap: 20px;
+    }
+
+    .flex-card {
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: 10px;
+      flex: 1 1 calc(33.333% - 20px); /* 3 columns on desktop */
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      transition: var(--transition);
+      border-top: 4px solid var(--primary);
+    }
+
+    .flex-card:hover {
+      transform: translateY(-5px);
+    }
+
+    /* --- Task: CSS Grid Gallery --- */
+    .photo-grid {
+      display: grid;
+      /* auto-fit handles responsiveness without media queries sometimes! */
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 15px;
+    }
+
+    .grid-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      height: 250px;
+    }
+
+    .grid-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: var(--transition);
+    }
+
+    /* Task: Featured item spanning 2 columns on large screens */
+    @media (min-width: 900px) {
+      .featured {
+        grid-column: span 2;
+        grid-row: span 1;
+      }
+    }
+
+    .caption {
+      position: absolute;
+      bottom: 0;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      width: 100%;
+      padding: 10px;
+      font-size: 0.8rem;
+    }
+
+    .grid-item:hover img {
+      transform: scale(1.1);
+    }
+
+    /* --- Media Queries (The Core of Responsive Design) --- */
+    
+    /* Tablet & Small Desktop */
+    @media (max-width: 900px) {
+      .flex-card {
+        flex: 1 1 calc(50% - 20px); /* 2 columns */
+      }
+      #hero h1 { font-size: 2.5rem; }
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .header-inner {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      nav a {
+        margin: 0 0.5rem;
+      }
+
+      .flex-card {
+        flex: 1 1 100%; /* 1 column */
+      }
+
+      #hero { padding: 4rem 1rem; }
+      #hero h1 { font-size: 1.8rem; }
+    }
+
+    /* --- Footer --- */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: var(--primary);
+      color: var(--white);
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <span class="logo">⚡ ResponsiWeb</span>
+      <nav>
+        <a href="#flexbox-demo">Flexbox</a>
+        <a href="#grid-demo">Grid</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="hero">
+      <h1>Responsive Web Design</h1>
+      <p>One codebase. Every screen size. Resize this window to see it in action.</p>
+    </section>
+
+    <!-- FLEXBOX SECTION -->
+    <section id="flexbox-demo">
+      <h2>Flexbox Cards</h2>
+      <p>Using <code>flex-wrap</code> and <code>flex-basis</code> to stack items.</p>
+      <div class="flex-container">
+        <div class="flex-card">
+          <h3>🏗️ HTML</h3>
+          <p>Structure and semantics. The skeleton of every web page.</p>
+        </div>
+        <div class="flex-card">
+          <h3>🎨 CSS</h3>
+          <p>Styling and layout. Makes the skeleton look beautiful.</p>
+        </div>
+        <div class="flex-card">
+          <h3>⚡ JavaScript</h3>
+          <p>Interactivity and logic. Brings the page to life.</p>
+        </div>
+        <div class="flex-card">
+          <h3>🐍 Python</h3>
+          <p>Backend logic and data processing.</p>
+        </div>
+        <div class="flex-card">
+          <h3>🗄️ SQL</h3>
+          <p>Relational databases and data queries.</p>
+        </div>
+        <div class="flex-card">
+          <h3>🔧 Git</h3>
+          <p>Version control and team collaboration.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- GRID SECTION -->
+    <section id="grid-demo">
+      <h2>CSS Grid Gallery</h2>
+      <p>Using <code>display: grid</code> for complex 2D layouts.</p>
+      <div class="photo-grid">
+        <div class="grid-item featured">
+          <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=80" alt="Featured" />
+          <span class="caption">Featured Project</span>
+        </div>
+        <div class="grid-item">
+          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=80" alt="Photo 2" />
+          <span class="caption">Design Session</span>
+        </div>
+        <div class="grid-item">
+          <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?auto=format&fit=crop&w=400&q=80" alt="Photo 3" />
+          <span class="caption">Code Review</span>
+        </div>
+        <div class="grid-item">
+          <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=400&q=80" alt="Photo 4" />
+          <span class="caption">Mobile Ready</span>
+        </div>
+        <div class="grid-item">
+          <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=400&q=80" alt="Photo 5" />
+          <span class="caption">Algorithms</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <h2>The Three Pillars</h2>
+      <p>Responsive design isn't just one property. It's a system:</p>
+      <ul style="margin-left: 20px; margin-top: 10px;">
+        <li><strong>Flexible Grids:</strong> Using % or fr units instead of fixed pixels.</li>
+        <li><strong>Flexible Media:</strong> Images that never exceed their container width.</li>
+        <li><strong>Media Queries:</strong> Applying different styles at specific breakpoints.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Week 9 · Exercise 3 · Responsive Design · Osman Özcan</p>
+  </footer>
+
+</body>
+</html>

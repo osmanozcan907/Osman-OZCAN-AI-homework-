@@ -1,0 +1,30 @@
+import re
+
+# Giriş verisi
+data = "Alice88Bob73Carol92David55Emine41Fatih67Grace91Hassan78Irem84Jorge60Kaya95Layla49Marco71Nadia83Omar66"
+
+# İsim ve puanları ayırmak için Regex (Harf grubu ve ardından gelen sayı grubu)
+matches = re.findall(r"([A-Z][a-z]+)(\d+)", data)
+
+print(f"{'Name':<10} | {'Score':<5} | {'Status'}")
+print("-" * 30)
+
+total_score = 0
+passed_count = 0
+
+for name, score_str in matches:
+    score = int(score_str)
+    total_score += score
+    
+    # Geçme notu 60 olarak belirlendi
+    status = "Passed" if score >= 60 else "Failed"
+    if status == "Passed":
+        passed_count += 1
+        
+    print(f"{name:<10} | {score:<5} | {status}")
+
+# Özet Rapor
+average = total_score / len(matches)
+print("-" * 30)
+print(f"Average Score: {average:.1f}")
+print(f"Passing Rate : {passed_count}/{len(matches)}")

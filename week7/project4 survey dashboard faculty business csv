@@ -1,0 +1,47 @@
+import re
+
+# Input data (Messy string from Business Faculty)
+data = "B001Business35PythonBest course I have takenB002Business14ExcelVery practical contentB003Business24PythonGreat for data analysis skillsB004Business45PythonWish I had this earlierB005Business13ExcelNeeded more guided examplesB006Business25PythonExceeded my expectationsB007Business34ExcelGood real-world applicationsB008Business45PythonLoved the SQL sectionB009Business13SPSSChallenging but rewardingB010Business24PythonExcellent pace and structureB011Business35ExcelVery engagingB012Business44PythonWould recommend to everyoneB013Business23RCould use more practice problems"
+
+# Regex Pattern explanation:
+# (B\d{3})        -> Student ID starting with B
+# (Business)      -> Faculty name
+# (\d)            -> Year of study
+# (\d)            -> Satisfaction score (1-5)
+# (Python|Excel|SPSS|R) -> Favourite tools used
+# (.*?)           -> Comment (non-greedy)
+# (?=B\d{3}|$)    -> Lookahead to stop at the next ID or end of string
+pattern = r"(B\d{3})(Business)(\d)(\d)(Python|Excel|SPSS|R)(.*?)(?=B\d{3}|$)"
+matches = re.findall(pattern, data)
+
+# Storage for analysis
+tool_stats = {}
+total_satisfaction = 0
+student_list = []
+
+print(f"{'ID':<6} | {'Year':<5} | {'Sat':<5} | {'Tool':<8} | {'Comment'}")
+print("-" * 75)
+
+for sid, faculty, year, sat, tool, comment in matches:
+    sat_score = int(sat)
+    total_satisfaction += sat_score
+    
+    # Track tool frequency
+    tool_stats[tool] = tool_stats.get(tool, 0) + 1
+    
+    # Print formatted row
+    print(f"{sid:<6} | {year:<5} | {sat:<5} | {tool:<8} | {comment.strip()}")
+
+# Final Analytics Report
+if len(matches) > 0:
+    avg_score = total_satisfaction / len(matches)
+    
+    print("\n=== Business Analytics Course Report ===")
+    print(f"Total Responses: {len(matches)}")
+    print(f"Average Satisfaction Rating: {avg_score:.2f} / 5.0")
+    
+    print("\nTool Popularity Ranking:")
+    # Sort tools by number of students (descending)
+    sorted_tools = sorted(tool_stats.items(), key=lambda item: item[1], reverse=True)
+    for tool, count in sorted_tools:
+        print(f"  - {tool:<8}: {count} students")

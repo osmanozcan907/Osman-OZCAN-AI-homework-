@@ -1,0 +1,38 @@
+import re
+
+# Input data (Messy string)
+data = "2025-03-01Room ALecture802025-03-01Room BWorkshop202025-03-02Room AMeeting122025-03-02Room CSocial652025-03-03Room ALecture902025-03-03Room BSocial552025-03-04Room CWorkshop302025-03-04Room AMeeting82025-03-05Room BLecture722025-03-05Room CSocial482025-03-06Room AWorkshop352025-03-06Room BMeeting152025-03-07Room CLecture612025-03-07Room ASocial442025-03-08Room BWorkshop22"
+
+# Regex pattern to separate Date, Room, Event Type, and Attendees
+# Format: YYYY-MM-DD + Room + Letter + Text + Digits
+pattern = r"(\d{4}-\d{2}-\d{2})(Room [A-C])([A-Za-z]+)(\d+)"
+matches = re.findall(pattern, data)
+
+# Variables for data analysis
+room_stats = {}   # {Room: Total Attendees}
+event_counts = {} # {Event: Session Count}
+
+# Print the formatted table header
+print(f"{'Date':<12} | {'Room':<8} | {'Event':<10} | {'Attendees'}")
+print("-" * 50)
+
+for date, room, event, attendees in matches:
+    count = int(attendees)
+    
+    # Print the table row
+    print(f"{date:<12} | {room:<8} | {event:<10} | {count:>3}")
+    
+    # Update room statistics
+    room_stats[room] = room_stats.get(room, 0) + count
+    
+    # Update event type counts
+    event_counts[event] = event_counts.get(event, 0) + 1
+
+# Summary Report Section
+print("\n=== Room Utilization Summary ===")
+for room, total in sorted(room_stats.items()):
+    print(f"{room}: {total} total attendees")
+
+print("\n=== Event Type Breakdown ===")
+for event, count in sorted(event_counts.items()):
+    print(f"{event:<10}: {count} sessions")

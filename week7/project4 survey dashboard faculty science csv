@@ -1,0 +1,46 @@
+import re
+
+# Input data (Messy string from Science Faculty)
+data = "S001Science14PythonGood course structureS002Science25PythonLoved the projectsS003Science13RMore examples neededS004Science35PythonExcellent instructorsS005Science24PythonWould like more SQL contentS006Science45RBest technical courseS007Science12ExcelToo fast for beginnersS008Science34PythonGreat problem setsS009Science24SPSSGood balance of theoryS010Science45PythonHighly recommendS011Science13RNeeds more examplesS012Science24PythonEnjoyed every lectureS013Science34ExcelClear and well structuredS014Science12SPSSStruggled with SQL sectionS015Science45PythonOutstanding course"
+
+# Regex Pattern explanation:
+# (S\d{3})                 -> Student ID starting with S
+# (Science)               -> Faculty name
+# (\d)                     -> Year of study (1-4)
+# (\d)                     -> Satisfaction score (1-5)
+# (Python|R|Excel|SPSS)    -> Tools mentioned in the Science dataset
+# (.*?)                    -> Comment section
+# (?=S\d{3}|$)             -> Lookahead to find the next ID or the end of string
+pattern = r"(S\d{3})(Science)(\d)(\d)(Python|R|Excel|SPSS)(.*?)(?=S\d{3}|$)"
+matches = re.findall(pattern, data)
+
+# Analysis variables
+tool_usage = {}
+total_sat = 0
+student_count = len(matches)
+
+print(f"{'ID':<6} | {'Year':<5} | {'Sat':<5} | {'Tool':<8} | {'Comment'}")
+print("-" * 80)
+
+for sid, faculty, year, sat, tool, comment in matches:
+    sat_score = int(sat)
+    total_sat += sat_score
+    
+    # Track tool frequency
+    tool_usage[tool] = tool_usage.get(tool, 0) + 1
+    
+    # Print formatted data row
+    print(f"{sid:<6} | {year:<5} | {sat:<5} | {tool:<8} | {comment.strip()}")
+
+# Final Analytics Summary
+if student_count > 0:
+    avg_satisfaction = total_sat / student_count
+    
+    print("\n=== Science Faculty Course Analysis ===")
+    print(f"Total Respondents: {student_count}")
+    print(f"Average Satisfaction: {avg_satisfaction:.2f} / 5.0")
+    
+    print("\nSoftware Tool Popularity:")
+    # Sort tools by usage count descending
+    for tool, count in sorted(tool_usage.items(), key=lambda x: x[1], reverse=True):
+        print(f"  - {tool:<8}: {count} students")

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JavaScript & the DOM - Master Practice</title>
+  <style>
+    /* --- CSS Styles --- */
+    :root {
+      --primary: #2563eb;
+      --bg: #f1f5f9;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    header { text-align: center; margin-bottom: 2rem; }
+    main { max-width: 700px; margin: 0 auto; }
+
+    .card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    h2 { border-bottom: 2px solid var(--bg); padding-bottom: 10px; margin-top: 0; }
+
+    /* Task 1: Box style */
+    #target-box {
+      padding: 20px;
+      text-align: center;
+      border: 2px dashed #cbd5e1;
+      margin: 10px 0;
+      transition: background-color 0.3s;
+    }
+
+    /* Task 2: Counter Display */
+    #count-display {
+      font-size: 3rem;
+      font-weight: bold;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .button-group, .input-row { display: flex; gap: 10px; justify-content: center; }
+
+    button {
+      padding: 8px 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+
+    button:hover { opacity: 0.8; }
+    .delete-btn { background: #ef4444; padding: 2px 8px; margin-left: 10px; }
+
+    /* Task 4: Toggle */
+    .hidden { display: none; }
+    .details { padding: 15px; background: #fef08a; border-radius: 6px; margin-top: 10px; }
+
+    /* Task 5: Sliders */
+    .sliders { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+    #color-preview {
+      height: 100px;
+      border-radius: 8px;
+      border: 4px solid white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      background-color: rgb(128, 128, 128);
+    }
+    #hex-display { text-align: center; font-family: monospace; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1 id="main-title">JavaScript DOM Practice</h1>
+    <p>Interact with the cards below to see the DOM in action.</p>
+  </header>
+
+  <main>
+    <!-- TASK 1: Warmup -->
+    <section id="warmup-section" class="card">
+      <h2>Task 1 — Console Warmup</h2>
+      <div id="target-box">I am the target box. Changed by JS!</div>
+      <button onclick="changeColor()">Change Color</button>
+    </section>
+
+    <!-- TASK 2: Counter -->
+    <section id="counter-section" class="card">
+      <h2>Task 2 — Click Counter</h2>
+      <div id="count-display">0</div>
+      <div class="button-group">
+        <button id="btn-decrement">− Decrement</button>
+        <button id="btn-reset">Reset</button>
+        <button id="btn-increment">+ Increment</button>
+      </div>
+    </section>
+
+    <!-- TASK 3: Dynamic List -->
+    <section id="list-section" class="card">
+      <h2>Task 3 — Dynamic List Builder</h2>
+      <div class="input-row">
+        <input type="text" id="list-input" placeholder="Type something..." />
+        <button id="btn-add-item">Add Item</button>
+      </div>
+      <ul id="dynamic-list">
+        <li>Example item <button class="delete-btn">×</button></li>
+      </ul>
+    </section>
+
+    <!-- TASK 4: Toggle -->
+    <section id="toggle-section" class="card">
+      <h2>Task 4 — Show / Hide Toggle</h2>
+      <button id="btn-toggle">Show Details</button>
+      <div id="details-div" class="details hidden">
+        <p>🎉 You revealed the hidden content!</p>
+      </div>
+    </section>
+
+    <!-- TASK 5: Color Mixer -->
+    <section id="color-section" class="card">
+      <h2>Task 5 — RGB Color Mixer</h2>
+      <div class="sliders">
+        <label>Red: <span id="val-r">128</span> <input type="range" id="slider-r" min="0" max="255" value="128" /></label>
+        <label>Green: <span id="val-g">128</span> <input type="range" id="slider-g" min="0" max="255" value="128" /></label>
+        <label>Blue: <span id="val-b">128</span> <input type="range" id="slider-b" min="0" max="255" value="128" /></label>
+      </div>
+      <div id="color-preview"></div>
+      <p id="hex-display">#808080</p>
+    </section>
+  </main>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // --- TASK 1: Warmup ---
+    function changeColor() {
+      const box = document.getElementById('target-box');
+      box.style.backgroundColor = '#38bdf8';
+      box.textContent = "I turned blue!";
+      console.log("Task 1 complete.");
+    }
+
+    // --- TASK 2: Counter ---
+    let count = 0;
+    const display = document.getElementById('count-display');
+    
+    document.getElementById('btn-increment').addEventListener('click', () => {
+      count++;
+      display.textContent = count;
+    });
+
+    document.getElementById('btn-decrement').addEventListener('click', () => {
+      count--;
+      display.textContent = count;
+    });
+
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      count = 0;
+      display.textContent = count;
+    });
+
+    // --- TASK 3: List Builder ---
+    const input = document.getElementById('list-input');
+    const list = document.getElementById('dynamic-list');
+    const addBtn = document.getElementById('btn-add-item');
+
+    addBtn.addEventListener('click', () => {
+      if (input.value.trim() !== "") {
+        const li = document.createElement('li');
+        li.innerHTML = `${input.value} <button class="delete-btn">×</button>`;
+        list.appendChild(li);
+        input.value = ""; // Clear input
+      }
+    });
+
+    // Event Delegation for delete buttons
+    list.addEventListener('click', (e) => {
+      if (e.target.classList.contains('delete-btn')) {
+        e.target.parentElement.remove();
+      }
+    });
+
+    // --- TASK 4: Toggle ---
+    const toggleBtn = document.getElementById('btn-toggle');
+    const details = document.getElementById('details-div');
+
+    toggleBtn.addEventListener('click', () => {
+      details.classList.toggle('hidden');
+      toggleBtn.textContent = details.classList.contains('hidden') ? "Show Details" : "Hide Details";
+    });
+
+    // --- TASK 5: Color Mixer ---
+    const r = document.getElementById('slider-r');
+    const g = document.getElementById('slider-g');
+    const b = document.getElementById('slider-b');
+    const preview = document.getElementById('color-preview');
+    const hex = document.getElementById('hex-display');
+
+    function updateColor() {
+      const rV = r.value;
+      const gV = g.value;
+      const bV = b.value;
+      document.getElementById('val-r').textContent = rV;
+      document.getElementById('val-g').textContent = gV;
+      document.getElementById('val-b').textContent = bV;
+      
+      const color = `rgb(${rV}, ${gV}, ${bV})`;
+      preview.style.backgroundColor = color;
+      
+      // Convert to Hex
+      const toHex = (c) => parseInt(c).toString(16).padStart(2, '0');
+      hex.textContent = `#${toHex(rV)}${toHex(gV)}${toHex(bV)}`.toUpperCase();
+    }
+
+    [r, g, b].forEach(slider => slider.addEventListener('input', updateColor));
+  </script>
+</body>
+</html>

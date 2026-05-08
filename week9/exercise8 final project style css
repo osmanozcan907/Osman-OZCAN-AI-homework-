@@ -1,0 +1,156 @@
+/**
+ * script.js — Final Project: FocusTask Manager (English)
+ * ====================================================
+ * Required Project Criteria Met:
+ * - Constant and block-scoped variables used (const/let, no var).
+ * - Implemented async/await fetch operation nested in try/catch logic.
+ * - Utilized local storage for task persistence across updates/refreshes.
+ * - Designed modular code split into custom named functions.
+ * - No primitive alert() blocks utilized for UI/UX notifications.
+ */
+
+// --- 1. STATE & DOM SELECTORS ---
+const STORAGE_KEY = 'focustask_data_en';
+let tasks = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+const taskForm = document.querySelector('#task-form');
+const taskList = document.querySelector('#task-list');
+const taskTitleInput = document.querySelector('#task-title');
+const priorityInput = document.querySelector('#task-priority');
+
+// --- 2. INITIALIZATION EVENT ---
+document.addEventListener('DOMContentLoaded', () => {
+  renderTasks();
+  fetchDailyInspiration();
+});
+
+// --- 3. CRUD CONTROLLERS ---
+
+/**
+ * Synchronizes the local tasks array with browser localStorage and triggers a UI update.
+ */
+function syncStorage() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  renderTasks();
+}
+
+/**
+ * Validates inputs and creates a new task object, pushing it into memory.
+ * @param {Event} event 
+ */
+function addTask(event) {
+  event.preventDefault();
+
+  const title = taskTitleInput.value.trim();
+  const priority = priorityInput.value;
+
+  if (!title) return;
+
+  const newTask = {
+    id: Date.now(),
+    title,
+    priority,
+    completed: false,
+    createdAt: new Date().toISOString()
+  };
+
+  tasks.unshift(newTask);
+  taskForm.reset();
+  syncStorage();
+}
+
+/**
+ * Deletes a target task safely via ID filtration.
+ * @param {number} id 
+ */
+function deleteTask(id) {
+  tasks = tasks.filter(task => task.id !== id);
+  syncStorage();
+}
+
+/**
+ * Toggles the completed state on a specific task.
+ * @param {number} id 
+ */
+function toggleTask(id) {
+  tasks = tasks.map(task => 
+    task.id === id ? { ...task, completed: !task.completed } : task
+  );
+  syncStorage();
+}
+
+// --- 4. ASYNC FETCH COMPONENT ---
+
+/**
+ * Connects asynchronously to an external API to retrieve a random motivational quote.
+ * Implements fallback default values if network errors occur.
+ */
+async function fetchDailyInspiration() {
+  try {
+    const response = await fetch('https://dummyjson.com/quotes/random');
+    
+    if (!response.ok) {
+      throw new Error('Inspirational quote service connection failed.');
+    }
+    
+    const data = await response.json();
+    displayQuote(data.quote, data.author);
+  } catch (error) {
+    console.warn('API Error, using fallback message:', error.message);
+    // Graceful fallback to avoid empty or broken boxes
+    displayQuote("Focus on being productive instead of busy.", "Tim Ferriss");
+  }
+}
+
+// --- 5. DOM RENDER LOGIC ---
+
+/**
+ * Renders the active list of tasks dynamically inside the viewport container.
+ */
+function renderTasks() {
+  taskList.innerHTML = '';
+
+  if (tasks.length === 0) {
+    taskList.innerHTML = '<li class="empty-msg">No tasks pending. Add something to get started!</li>';
+    return;
+  }
+
+  tasks.forEach(task => {
+    const li = document.createElement('li');
+    li.className = `task-item ${task.priority} ${task.completed ? 'done' : ''}`;
+    
+    li.innerHTML = `
+      <div class="task-content">
+        <input 
+          type="checkbox" 
+          ${task.completed ? 'checked' : ''} 
+          onchange="toggleTask(${task.id})"
+        >
+        <span>${task.title}</span>
+      </div>
+      <button class="delete-btn" onclick="deleteTask(${task.id})">Delete</button>
+    `;
+    taskList.appendChild(li);
+  });
+}
+
+/**
+ * Injects quote text neatly inside the placeholder element.
+ * @param {string} text 
+ * @param {string} author 
+ */
+function displayQuote(text, author) {
+  const quoteArea = document.querySelector('#quote-display');
+  if (quoteArea) {
+    quoteArea.innerHTML = `<p>"${text}" — <strong>${author}</strong></p>`;
+  }
+}
+
+// --- 6. EVENT BINDINGS ---
+taskForm.addEventListener('submit', addTask);
+
+// Exposed global bindings for custom programmatic inline DOM calls (e.g., onclick attributes)
+window.toggleTask = toggleTask;
+window.deleteTask = deleteTask;
+
+console.log('FocusTask Manager initialized successfully. 🚀');

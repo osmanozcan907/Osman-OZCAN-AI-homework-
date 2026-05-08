@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forms & Validation - Master File</title>
+  <style>
+    /* --- CSS Styles --- */
+    :root {
+      --primary: #4f46e5;
+      --error: #ef4444;
+      --success: #22c55e;
+      --bg: #f8fafc;
+    }
+
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: #1e293b; padding: 20px; }
+    main { max-width: 500px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+    header { text-align: center; margin-bottom: 2rem; }
+    
+    .form-group { margin-bottom: 1.5rem; display: flex; flex-direction: column; }
+    label { font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; }
+    
+    input, select, textarea {
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    input:focus { outline: none; border-color: var(--primary); ring: 2px solid #c7d2fe; }
+    input.invalid { border-color: var(--error); }
+
+    .error-msg { color: var(--error); font-size: 0.8rem; margin-top: 4px; min-height: 1.2em; }
+    
+    button {
+      background: var(--primary);
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    button:hover { opacity: 0.9; }
+    .hidden { display: none; }
+    #success-message { text-align: center; color: var(--success); margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Registration Form</h1>
+    <p>Complete all required fields to create your account.</p>
+  </header>
+
+  <main>
+    <div id="success-message" class="hidden">
+      <h2>🎉 Registration Successful!</h2>
+      <p>Welcome aboard, Osman! Your account is ready.</p>
+    </div>
+
+    <form id="registration-form" novalidate>
+      
+      <!-- 1. Full Name -->
+      <div class="form-group">
+        <label for="full-name">Full Name *</label>
+        <input type="text" id="full-name" placeholder="John Doe" required>
+        <span class="error-msg" id="error-full-name"></span>
+      </div>
+
+      <!-- 2. Email -->
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" placeholder="osman@example.com" required>
+        <span class="error-msg" id="error-email"></span>
+      </div>
+
+      <!-- 3. Password -->
+      <div class="form-group">
+        <label for="password">Password * (Min. 8 chars)</label>
+        <input type="password" id="password" required>
+        <span class="error-msg" id="error-password"></span>
+      </div>
+
+      <!-- 4. Confirm Password -->
+      <div class="form-group">
+        <label for="confirm-password">Confirm Password *</label>
+        <input type="password" id="confirm-password" required>
+        <span class="error-msg" id="error-confirm-password"></span>
+      </div>
+
+      <!-- 5. Birth Date -->
+      <div class="form-group">
+        <label for="birth-date">Date of Birth *</label>
+        <input type="date" id="birth-date" required>
+        <span class="error-msg" id="error-birth-date"></span>
+      </div>
+
+      <!-- 6. Department (Select) -->
+      <div class="form-group">
+        <label for="dept">Department *</label>
+        <select id="dept" required>
+          <option value="">Select a department...</option>
+          <option value="ai">AI Engineering</option>
+          <option value="cs">Computer Science</option>
+          <option value="soft">Software Engineering</option>
+        </select>
+        <span class="error-msg" id="error-dept"></span>
+      </div>
+
+      <!-- 7. Bio (Textarea) -->
+      <div class="form-group">
+        <label for="bio">Short Bio</label>
+        <textarea id="bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+        <span class="error-msg" id="error-bio"></span>
+      </div>
+
+      <!-- 8. Terms (Checkbox) -->
+      <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px;">
+        <input type="checkbox" id="terms" required>
+        <label for="terms" style="margin: 0;">I agree to the Terms & Conditions *</label>
+      </div>
+      <span class="error-msg" id="error-terms" style="display: block; margin-bottom: 15px;"></span>
+
+      <button type="submit">Create Account</button>
+    </form>
+  </main>
+
+  <script>
+    const form = document.getElementById('registration-form');
+    const successMsg = document.getElementById('success-message');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let isValid = true;
+
+      // Helper function to show errors
+      const setError = (id, message) => {
+        const input = document.getElementById(id);
+        const errorSpan = document.getElementById(`error-${id}`);
+        if (message) {
+          input.classList.add('invalid');
+          errorSpan.textContent = message;
+          isValid = false;
+        } else {
+          input.classList.remove('invalid');
+          errorSpan.textContent = "";
+        }
+      };
+
+      // 1. Name Validation
+      const name = document.getElementById('full-name');
+      setError('full-name', name.value.trim().length < 3 ? "Name must be at least 3 characters." : "");
+
+      // 2. Email Validation
+      const email = document.getElementById('email');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      setError('email', !emailRegex.test(email.value) ? "Please enter a valid email." : "");
+
+      // 3. Password Validation
+      const pass = document.getElementById('password');
+      setError('password', pass.value.length < 8 ? "Password must be at least 8 characters." : "");
+
+      // 4. Confirm Password
+      const confirmPass = document.getElementById('confirm-password');
+      setError('confirm-password', confirmPass.value !== pass.value ? "Passwords do not match." : "");
+
+      // 5. Checkbox Validation
+      const terms = document.getElementById('terms');
+      setError('terms', !terms.checked ? "You must accept the terms." : "");
+
+      // 6. Select Validation
+      const dept = document.getElementById('dept');
+      setError('dept', dept.value === "" ? "Please select a department." : "");
+
+      if (isValid) {
+        form.classList.add('hidden');
+        successMsg.classList.remove('hidden');
+        console.log("Form submitted successfully!");
+      }
+    });
+  </script>
+</body>
+</html>

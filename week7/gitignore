@@ -1,0 +1,28 @@
+# ============================================================
+# .gitignore - Database & Python Project Exclusions
+# ============================================================
+
+# SQLite veritabanları (SQL dosyalarından oluşturulan canlı veriler)
+# Bu dosyalar kişisel veya geçici olduğu için depoya eklenmez.
+*.db
+*.db-shm
+*.db-wal
+
+# İşletim Sistemi dosyaları (macOS ve Windows gereksiz dosyaları)
+.DS_Store
+Thumbs.db
+
+# Editör ve IDE dosyaları (VS Code, PyCharm vb. kişisel ayarları)
+.vscode/
+.idea/
+*.swp
+*~
+
+# Python derleme ve önbellek dosyaları
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# SQL Alıştırma çıktıları veya günlükleri (Opsiyonel ekleme)
+*.log

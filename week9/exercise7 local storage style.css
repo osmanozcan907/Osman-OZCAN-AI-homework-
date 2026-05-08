@@ -1,0 +1,258 @@
+/* Exercise 7 — Notes App Styles */
+
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+body { 
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; 
+  background: #f5f5f0; 
+  color: #222; 
+  line-height: 1.6; 
+  min-height: 100vh; 
+}
+
+header { 
+  background: #2c3e50; 
+  color: white; 
+  padding: 1.5rem 2rem; 
+}
+
+header h1 {
+  font-size: 1.8rem;
+}
+
+header p { 
+  opacity: 0.7; 
+  font-size: 0.9rem; 
+  margin-top: 0.25rem; 
+}
+
+main { 
+  max-width: 1100px; 
+  margin: 0 auto; 
+  padding: 2rem 1rem; 
+}
+
+.layout { 
+  display: grid; 
+  grid-template-columns: 320px 1fr; 
+  gap: 2rem; 
+}
+
+/* Sidebar & Form Styles */
+.sidebar { 
+  background: white; 
+  border-radius: 12px; 
+  padding: 1.5rem; 
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08); 
+  height: fit-content; 
+  position: sticky; 
+  top: 1rem; 
+}
+
+.sidebar h2 { 
+  margin-bottom: 1.25rem; 
+  color: #2c3e50; 
+  font-size: 1.4rem;
+}
+
+.form-group { 
+  margin-bottom: 1rem; 
+}
+
+.form-group label { 
+  display: block; 
+  font-weight: 600; 
+  margin-bottom: 0.3rem; 
+  font-size: 0.9rem; 
+}
+
+.form-group input, 
+.form-group textarea { 
+  width: 100%; 
+  padding: 0.6rem 0.8rem; 
+  border: 2px solid #ddd; 
+  border-radius: 6px; 
+  font-size: 0.95rem; 
+  font-family: inherit; 
+  transition: border-color 0.2s; 
+}
+
+.form-group input:focus, 
+.form-group textarea:focus { 
+  outline: none; 
+  border-color: #2c3e50; 
+}
+
+.button-row { 
+  display: flex; 
+  gap: 0.5rem; 
+}
+
+/* Button UI */
+button { 
+  padding: 0.6rem 1.2rem; 
+  border: none; 
+  border-radius: 6px; 
+  cursor: pointer; 
+  font-size: 0.9rem; 
+  font-weight: 600; 
+  background: #2c3e50; 
+  color: white; 
+  transition: opacity 0.15s, transform 0.1s; 
+}
+
+button:hover { 
+  opacity: 0.85; 
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button.secondary { 
+  background: #ddd; 
+  color: #555; 
+}
+
+.hidden { 
+  display: none !important; 
+}
+
+/* Notes Feed Panel */
+.notes-panel { 
+  min-height: 400px; 
+}
+
+.notes-toolbar { 
+  display: flex; 
+  gap: 1rem; 
+  align-items: center; 
+  margin-bottom: 1.25rem; 
+}
+
+.notes-toolbar input { 
+  flex: 1; 
+  padding: 0.6rem 1rem; 
+  border: 2px solid #ddd; 
+  border-radius: 8px; 
+  font-size: 0.95rem; 
+}
+
+.notes-toolbar input:focus { 
+  outline: none; 
+  border-color: #2c3e50; 
+}
+
+#notes-count { 
+  color: #888; 
+  font-size: 0.85rem; 
+  white-space: nowrap; 
+}
+
+/* Note Cards Styling */
+.note-card { 
+  background: white; 
+  border-radius: 10px; 
+  padding: 1.25rem; 
+  margin-bottom: 1rem; 
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07); 
+  border-left: 5px solid #bdc3c7; 
+  transition: box-shadow 0.2s, transform 0.2s; 
+}
+
+.note-card:hover { 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+  transform: translateY(-1px);
+}
+
+/* Task 5: Pinned State style */
+.note-card.pinned { 
+  border-left-color: #f39c12; 
+  background: #fffdf5; /* Pinlenen notlara hafif tatlı sarımsı arka plan */
+}
+
+.note-card h3 { 
+  font-size: 1.1rem; 
+  margin-bottom: 0.4rem; 
+  color: #2c3e50; 
+}
+
+.note-card .note-body { 
+  font-size: 0.9rem; 
+  color: #555; 
+  margin-bottom: 0.75rem; 
+  white-space: pre-wrap; /* Satır boşluklarını korur */
+}
+
+/* Meta & Action Group */
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.note-meta { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  font-size: 0.8rem; 
+  color: #888; 
+  margin-top: 0.5rem;
+  border-top: 1px solid #f1f2f6;
+  padding-top: 0.5rem;
+}
+
+.note-actions { 
+  display: flex; 
+  gap: 0.4rem; 
+}
+
+.note-actions button { 
+  padding: 0.3rem 0.6rem; 
+  font-size: 0.75rem; 
+  font-weight: bold;
+}
+
+.btn-edit { 
+  background: #3498db; 
+}
+
+.btn-pin { 
+  background: #f39c12; 
+}
+
+.btn-delete { 
+  background: #e74c3c; 
+}
+
+/* Empty State Styling */
+.empty-state { 
+  text-align: center; 
+  padding: 4rem 2rem; 
+  color: #95a5a6; 
+  background: white;
+  border-radius: 12px;
+  border: 2px dashed #bdc3c7;
+}
+
+footer { 
+  text-align: center; 
+  padding: 3rem 2rem; 
+  color: #95a5a6; 
+  font-size: 0.85rem; 
+}
+
+/* Responsive Grid Breakpoints */
+@media (max-width: 700px) { 
+  .layout { 
+    grid-template-columns: 1fr; 
+  } 
+  .sidebar {
+    position: static;
+  }
+}

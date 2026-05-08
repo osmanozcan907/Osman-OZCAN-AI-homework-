@@ -1,0 +1,40 @@
+import re
+
+# Input data (Messy string)
+data = "A001Arts24ExcelClear explanationsA002Arts13ExcelA bit too technical at timesA003Arts35PythonChanged how I think about dataA004Arts24RGood workloadA005Arts45PythonPractical and relevantA006Arts12ExcelMore support needed for beginnersA007Arts34PythonWell pacedA008Arts25ExcelLoved the CSV projectsA009Arts44PythonGood use of real datasetsA010Arts13RInteresting but challengingA011Arts35PythonInspiring instructorA012Arts24ExcelWould take again"
+
+# Regex Pattern:
+# (ID) (Faculty) (Year) (Satisfaction) (Tool) (Comments)
+# ID: A\d{3} | Faculty: [A-Z][a-z]+ | Year: \d | Sat: \d | Tool: Excel|Python|R
+pattern = r"(A\d{3})(Arts)(\d)(\d)(Excel|Python|R)(.*?)(?=A\d{3}|$)"
+matches = re.findall(pattern, data)
+
+# Analysis storage
+tool_counts = {}
+total_satisfaction = 0
+students_count = len(matches)
+
+print(f"{'ID':<6} | {'Year':<5} | {'Sat':<5} | {'Tool':<8} | {'Comment'}")
+print("-" * 70)
+
+for student_id, faculty, year, sat, tool, comment in matches:
+    satisfaction_val = int(sat)
+    total_satisfaction += satisfaction_val
+    
+    # Update tool popularity
+    tool_counts[tool] = tool_counts.get(tool, 0) + 1
+    
+    # Print student row
+    print(f"{student_id:<6} | {year:<5} | {sat:<5} | {tool:<8} | {comment.strip()}")
+
+# Summary Report
+if students_count > 0:
+    avg_sat = total_satisfaction / students_count
+    
+    print("\n=== Student Feedback Summary ===")
+    print(f"Total Students: {students_count}")
+    print(f"Average Satisfaction: {avg_sat:.2f} / 5.0")
+    
+    print("\nTool Popularity:")
+    for tool, count in sorted(tool_counts.items(), key=lambda x: x[1], reverse=True):
+        print(f"  {tool:<8}: {count} students")

@@ -1,0 +1,58 @@
+// word_check.c
+// CS50x — Week 5 Logic: Tokenization and Verification
+//
+// This code processes sentences and extracts words to verify them.
+
+#include <stdio.h>
+#include <ctype.h>
+#include <stdbool.h>
+#include <string.h>
+
+// Maximum length for a word
+#define LENGTH 45
+
+int main(void)
+{
+    // Your provided text for testing
+    char *text = "The cat sat on the mat. It was a good day to be a cat. "
+                 "The dog ran quickly across the yard. It was very fast. "
+                 "A person might think that this is a great place to work. "
+                 "Sometimes life can be difficult but we should not give up. "
+                 "The world is large and full of many different kinds of people.";
+
+    printf("Analyzing text and extracting words:\n");
+    printf("------------------------------------\n");
+
+    char word[LENGTH + 1];
+    int index = 0;
+    int word_count = 0;
+
+    // Iterate through each character in the text
+    for (int i = 0, n = strlen(text); i < n; i++)
+    {
+        // Check if character is alphabetical
+        if (isalpha(text[i]))
+        {
+            // Build the word
+            word[index] = text[i];
+            index++;
+        }
+        // If it's a space or punctuation, the word has ended
+        else if (index > 0)
+        {
+            // Terminate the string
+            word[index] = '\0';
+
+            // Print the extracted word
+            printf("Word %02d: %s\n", ++word_count, word);
+
+            // Reset index for the next word
+            index = 0;
+        }
+    }
+
+    printf("------------------------------------\n");
+    printf("Total words found: %d\n", word_count);
+
+    return 0;
+}

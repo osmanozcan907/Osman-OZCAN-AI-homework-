@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FocusTask — Task Manager</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <h1>✅ FocusTask</h1>
+      <div class="stats">
+        <span>Total: <strong id="total-count">0</strong></span>
+        <span>Done: <strong id="done-count">0</strong></span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="task-input-section">
+      <form id="task-form">
+        <input type="text" id="task-title" placeholder="What needs to be done?" required />
+        <select id="task-priority">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+        <button type="submit" id="add-btn">Add Task</button>
+      </form>
+    </section>
+
+    <section class="filter-section">
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="pending">Pending</button>
+        <button class="filter-btn" data-filter="completed">Completed</button>
+      </div>
+      <button id="clear-completed">Clear Completed</button>
+    </section>
+
+    <section class="task-list-section">
+      <ul id="task-list">
+        <!-- Tasks will be injected here -->
+      </ul>
+      <div id="empty-state" class="hidden">
+        <p>No tasks found. Enjoy your free time! ☕</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Week 9 · Final Project · Osman Özcan</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
